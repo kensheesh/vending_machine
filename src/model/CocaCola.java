@@ -7,3 +7,5 @@ public class CocaCola extends Product {
         super("Coca Cola", actionLetter, price);
     }
 }
+
+

@@ -7,3 +7,5 @@ public class Mars extends Product {
         super("Mars", actionLetter, price);
     }
 }
+
+
