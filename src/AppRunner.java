@@ -33,15 +33,31 @@ public class AppRunner {
     }
 
     private void startSimulation() {
-        print("В автомате доступны:");
-        showProducts(products);
+        print("Главное меню:");
+        print("1 = Показать доступные товары");
+        print("2 = Пополнить ваш баланс");
+        print("h = Выйти");
 
-        print("Монет на сумму: " + coinAcceptor.getAmount());
+        String choice = fromConsole().substring(0, 1);
 
-        UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
-        allowProducts.addAll(getAllowedProducts().toArray());
-        chooseAction(allowProducts);
-
+        switch (choice) {
+            case "1":
+                print("В автомате доступны:");
+                showProducts(products);
+                print("Монет на сумму: " + coinAcceptor.getAmount());
+                UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
+                allowProducts.addAll(getAllowedProducts().toArray());
+                chooseAction(allowProducts);
+                break;
+            case "2":
+                topBalance();
+                break;
+            case "h":
+                isExit = true;
+                break;
+            default:
+                print("Неправильная команда. Попробуйте заново!");
+        }
     }
 
     private UniversalArray<Product> getAllowedProducts() {
