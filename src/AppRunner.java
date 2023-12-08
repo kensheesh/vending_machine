@@ -74,14 +74,15 @@ public class AppRunner {
         print(" h - Выйти");
         String action = fromConsole().substring(0, 1);
         try {
+            if ("h".equalsIgnoreCase(action)) {
+                return;
+            }
+
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
                     if (moneyReceiver.doPurchasing(products.get(i).getPrice())) {
                         print("Вы купили " + products.get(i).getName());
                     }
-                    break;
-                } else if ("h".equalsIgnoreCase(action)) {
-                    isExit = true;
                     break;
                 }
             }

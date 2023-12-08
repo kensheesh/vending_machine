@@ -30,3 +30,4 @@ class AcceptorCoin implements MoneyReceiver {
         return balance;
     }
 }
+
