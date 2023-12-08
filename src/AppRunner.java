@@ -35,6 +35,7 @@ public class AppRunner {
         print("Главное меню:");
         print("1 = Показать доступные товары");
         print("2 = Пополнить ваш баланс");
+        print("3 = Пополнить картой баланс");
         print("h = Выйти");
 
         String choice = fromConsole().substring(0, 1);
@@ -50,6 +51,9 @@ public class AppRunner {
                 break;
             case "2":
                 topBalance();
+                break;
+            case "3":
+                topBalanceWithCard();
                 break;
             case "h":
                 isExit = true;
@@ -121,6 +125,39 @@ public class AppRunner {
                 print("Баланс успешно пополнен Ваш баланс: " + moneyReceiver.getBalance());
             } else {
                 print("Вы ввели некорректное число для пополнения баланса (отрицтальное)");
+            }
+        } catch (NumberFormatException e) {
+            print("Недопустимый ввод! Введите число для пополнения баланса.");
+        }
+    }
+
+
+    private void topBalanceWithCard() {
+        print("Введите номер карты:");
+        String str1 = fromConsole();
+        int cardNumber = Integer.parseInt(str1);
+        print("Введите пин-код карты:");
+        String str2 = fromConsole();
+        int pinCode = Integer.parseInt(str2);
+        int oldNumber = 12345;
+        int oldpincode = 111;
+
+        // здесь можно будет добавить реализацию с проверкой на правильной номера
+        // с помощью хиширования, или другими способами. Я сделаю просто с переменными,
+        // дам им название и буду просто сравнивать
+
+        print("Введите сумму для пополнения карты:");
+        try {
+            int amountToAdd = Integer.parseInt(fromConsole());
+            if (cardNumber == oldNumber && pinCode == oldpincode) {
+                if (amountToAdd > 0) {
+                    moneyReceiver.insertMoney(amountToAdd);
+                    print("Баланс карты успешно пополнен. Ваш баланс: " + moneyReceiver.getBalance());
+                } else {
+                    print("Вы ввели некорректное число для пополнения баланса (отрицательное).");
+                }
+            } else {
+                print("Вы невверно ввели номер или пинкод вашей карты");
             }
         } catch (NumberFormatException e) {
             print("Недопустимый ввод! Введите число для пополнения баланса.");
