@@ -14,13 +14,13 @@ class AcceptorCoin implements MoneyReceiver {
 
     @Override
     public boolean doPurchasing(int amount) {
-        if (balance <= amount) {
+        if (balance >= amount) {
             balance -= amount;
-            return false;
+            return true;
 
         } else {
             System.out.println(" Пожалуйста, положите деньги. У вас не хватает денег");
-            return true;
+            return false;
         }
     }
 

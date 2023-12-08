@@ -15,3 +15,5 @@ public class CoinAcceptor {
         this.amount = amount;
     }
 }
+
+
