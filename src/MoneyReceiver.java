@@ -1,5 +1,5 @@
 interface MoneyReceiver {
-    boolean makePurchase(int amount);
+    boolean doPurchasing(int amount);
     int getBalance();
 
     void insertMoney(int amount);

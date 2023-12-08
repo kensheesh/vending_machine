@@ -9,11 +9,11 @@ public class AppRunner {
 
     private final UniversalArray<Product> products = new UniversalArrayImpl<>();
 
-    private final CoinAcceptor coinAcceptor;
-
     private static boolean isExit = false;
+    private final MoneyReceiver moneyReceiver;
 
-    private AppRunner() {
+    private AppRunner(MoneyReceiver moneyReceiver) {
+        this.moneyReceiver = moneyReceiver;
         products.addAll(new Product[]{
                 new Water(ActionLetter.B, 20),
                 new CocaCola(ActionLetter.C, 50),
@@ -22,11 +22,10 @@ public class AppRunner {
                 new Mars(ActionLetter.F, 80),
                 new Pistachios(ActionLetter.G, 130)
         });
-        coinAcceptor = new CoinAcceptor(100);
     }
 
-    public static void run() {
-        AppRunner app = new AppRunner();
+    public static void run(MoneyReceiver moneyReceiver) {
+        AppRunner app = new AppRunner(moneyReceiver);
         while (!isExit) {
             app.startSimulation();
         }
@@ -44,7 +43,7 @@ public class AppRunner {
             case "1":
                 print("В автомате доступны:");
                 showProducts(products);
-                print("Монет на сумму: " + coinAcceptor.getAmount());
+                print("Монет на сумму: " + moneyReceiver.getBalance());
                 UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
                 allowProducts.addAll(getAllowedProducts().toArray());
                 chooseAction(allowProducts);
@@ -63,7 +62,7 @@ public class AppRunner {
     private UniversalArray<Product> getAllowedProducts() {
         UniversalArray<Product> allowProducts = new UniversalArrayImpl<>();
         for (int i = 0; i < products.size(); i++) {
-            if (coinAcceptor.getAmount() >= products.get(i).getPrice()) {
+            if (moneyReceiver.getBalance() >= products.get(i).getPrice()) {
                 allowProducts.add(products.get(i));
             }
         }
@@ -77,8 +76,9 @@ public class AppRunner {
         try {
             for (int i = 0; i < products.size(); i++) {
                 if (products.get(i).getActionLetter().equals(ActionLetter.valueOf(action.toUpperCase()))) {
-                    coinAcceptor.setAmount(coinAcceptor.getAmount() - products.get(i).getPrice());
-                    print("Вы купили " + products.get(i).getName());
+                    if (moneyReceiver.doPurchasing(products.get(i).getPrice())) {
+                        print("Вы купили " + products.get(i).getName());
+                    }
                     break;
                 } else if ("h".equalsIgnoreCase(action)) {
                     isExit = true;
@@ -89,8 +89,6 @@ public class AppRunner {
             print("Недопустимая буква. Попрбуйте еще раз.");
             chooseAction(products);
         }
-
-
     }
 
     private void showActions(UniversalArray<Product> products) {
@@ -118,8 +116,8 @@ public class AppRunner {
         try {
             int amountToAdd = Integer.parseInt(fromConsole());
             if (amountToAdd > 0) {
-                coinAcceptor.setAmount(coinAcceptor.getAmount() + amountToAdd);
-                print("Баланс успешно пополнен Ваш баланс: " + coinAcceptor.getAmount());
+                moneyReceiver.insertMoney(amountToAdd);
+                print("Баланс успешно пополнен Ваш баланс: " + moneyReceiver.getBalance());
             } else {
                 print("Вы ввели некорректное число для пополнения баланса (отрицтальное)");
             }
