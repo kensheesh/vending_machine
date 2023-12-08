@@ -96,4 +96,21 @@ public class AppRunner {
     private void print(String msg) {
         System.out.println(msg);
     }
+
+    private void topBalance() {
+        print("Введите сумму для пополнения вашего баланса:");
+        try {
+            int amountToAdd = Integer.parseInt(fromConsole());
+            if (amountToAdd > 0) {
+                coinAcceptor.setAmount(coinAcceptor.getAmount() + amountToAdd);
+                print("Баланс успешно пополнен Ваш баланс: " + coinAcceptor.getAmount());
+            } else {
+                print("Вы ввели некорректное число для пополнения баланса (отрицтальное)");
+            }
+        } catch (NumberFormatException e) {
+            print("Недопустимый ввод! Введите число для пополнения баланса.");
+        }
+    }
 }
+
+
